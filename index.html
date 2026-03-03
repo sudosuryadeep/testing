@@ -3,67 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js Garden – plant & enjoy</title>
+    <title>Three.js Advanced Garden – Full Creative Control</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; }
         #info {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
-            background: rgba(0, 40, 20, 0.6);
-            backdrop-filter: blur(5px);
-            padding: 10px 24px;
-            border-radius: 40px;
+            background: rgba(10, 20, 15, 0.7);
+            backdrop-filter: blur(8px);
+            color: #c0ffb0;
+            padding: 12px 28px;
+            border-radius: 50px;
+            border-left: 4px solid #7ae07a;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             pointer-events: none;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            border: 1px solid rgba(255, 255, 200, 0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 10;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
-        #info span {
+        #info h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #info h1 span {
+            background: #3a5a3a;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #b0ffb0;
+        }
+        #controls-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(20, 30, 20, 0.75);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 18px 25px;
+            border-radius: 24px;
+            border: 1px solid rgba(120, 220, 120, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 20;
+            pointer-events: all;
+            max-width: 280px;
+            font-size: 0.95rem;
+            transition: opacity 0.3s;
+        }
+        #controls-panel h3 {
+            margin: 0 0 15px 0;
+            color: #b0ffa0;
+            font-weight: 300;
+            border-bottom: 1px dashed #5a7a5a;
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .slider-container {
+            margin-bottom: 18px;
+        }
+        .slider-container label {
+            display: flex;
+            justify-content: space-between;
+            color: #ddd;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            background: #2a4a2a;
+            height: 5px;
+            border-radius: 10px;
+            accent-color: #7ae07a;
+        }
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .color-row button {
+            background: #2a4a2a;
+            border: none;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            border: 1px solid #5f9f5f;
+        }
+        .color-row button:hover {
+            background: #3f6f3f;
+            transform: scale(1.02);
+        }
+        #particle-toggle {
+            background: #3f5f3f;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            color: white;
+            border-radius: 40px;
             font-weight: 600;
-            color: #d4ffb0;
+            cursor: pointer;
+            margin-top: 15px;
+            letter-spacing: 1px;
+            border: 1px solid #8fc08f;
+            transition: all 0.2s;
+        }
+        #particle-toggle:hover {
+            background: #4f7a4f;
+            box-shadow: 0 0 15px #7ae07a80;
         }
         #instruction {
             position: absolute;
             bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            background: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(4px);
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-size: 1rem;
-            border: 1px solid rgba(255,255,200,0.2);
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            color: #e0ffe0;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            border: 1px solid #5f9f5f;
+            z-index: 15;
             pointer-events: none;
-            z-index: 10;
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px black;
         }
-        #instruction span {
-            display: inline-block;
-            background: #4caf7a;
-            color: black;
-            font-weight: bold;
-            padding: 0 10px;
+        #stats {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #1a2a1ae0;
+            color: #b0ffb0;
+            padding: 6px 15px;
             border-radius: 30px;
-            margin: 0 4px;
+            font-size: 0.8rem;
+            border: 1px solid #5f9f5f;
+            backdrop-filter: blur(4px);
+            z-index: 12;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
-    <div id="info">🌿 <span>serene garden</span> · breathe & create</div>
-    <div id="instruction">🌱 <span>click</span> anywhere to plant a flower · watch them sway</div>
+    <div id="info">
+        <h1>🌿 ADVANCED GARDEN <span>CREATIVE MODE</span></h1>
+    </div>
+    <div id="stats">🌼 FLOWERS: <span id="flower-count">26</span> | FPS: <span id="fps">60</span></div>
+    <div id="controls-panel">
+        <h3>🎮 FULL CONTROL</h3>
+        <div class="slider-container">
+            <label>🌱 FLOWER STEM HEIGHT <span id="stem-val">1.2</span></label>
+            <input type="range" id="stem-slider" min="0.4" max="2.2" step="0.05" value="1.2">
+        </div>
+        <div class="slider-container">
+            <label>🌸 PETAL SIZE <span id="petal-val">0.13</span></label>
+            <input type="range" id="petal-slider" min="0.06" max="0.25" step="0.01" value="0.13">
+        </div>
+        <div class="slider-container">
+            <label>🌀 SWAY INTENSITY <span id="sway-val">0.03</span></label>
+            <input type="range" id="sway-slider" min="0.0" max="0.12" step="0.002" value="0.03">
+        </div>
+        <div class="color-row">
+            <span style="color:white;">🎨 PETAL HUE</span>
+            <button id="hue-random">RANDOM</button>
+        </div>
+        <div class="slider-container">
+            <label>🌍 TIME SPEED <span id="time-val">1.0</span></label>
+            <input type="range" id="time-slider" min="0.0" max="2.5" step="0.05" value="1.0">
+        </div>
+        <button id="particle-toggle">✨ TOGGLE MAGIC DUST</button>
+        <p style="font-size:0.75rem; color:#aaa; margin-top:16px; text-align:center;">🖱️ Drag to rotate · Scroll to zoom · Click to plant</p>
+    </div>
+    <div id="instruction">⭐ click ground — plant a flower with current style</div>
 
-    <!-- Import Three.js core and OrbitControls from CDN -->
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.126.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.126.0/examples/jsm/"
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
             }
         }
     </script>
@@ -71,278 +198,306 @@
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        // --- setup scene, camera, renderer ---
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js'; // for creative optional effect
+        
+        // --- setup scene with advanced features ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xaacfcf); // soft sky
-        // Add a very subtle fog for depth
-        scene.fog = new THREE.Fog(0xaacfcf, 20, 50);
+        scene.background = new THREE.Color(0x0a1a2a); // deep night blue
+        scene.fog = new THREE.FogExp2(0x0a1a2a, 0.025);
 
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(12, 8, 18);
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(18, 12, 22);
         camera.lookAt(0, 2, 0);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // soft shadows for nicer look
+        renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = 1.2;
         document.body.appendChild(renderer.domElement);
 
-        // --- controls with damping for smoothness ---
+        // --- post processing for bloom (creative glow) ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.8, 0.2, 0.1);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 0.6;
+        bloomPass.radius = 0.8;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        // optional glitch for creative effect (disabled by default, but we can toggle)
+        const glitchPass = new GlitchPass();
+        glitchPass.goWild = false; // keep it subtle if used
+
+        // --- controls with full freedom ---
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.maxPolarAngle = Math.PI / 2.3; // prevent going under ground
-        controls.minDistance = 8;
-        controls.maxDistance = 35;
-        controls.target.set(0, 2, 0);
+        controls.maxPolarAngle = Math.PI / 1.8; // allow slightly under
+        controls.minDistance = 3;
+        controls.maxDistance = 60;
+        controls.enablePan = true;
+        controls.panSpeed = 1.2;
+        controls.rotateSpeed = 0.8;
+        controls.zoomSpeed = 1.2;
+        controls.target.set(0, 3, 0);
 
-        // --- lighting for vibrant colors and shadows ---
-        // Ambient light (soft)
-        const ambientLight = new THREE.AmbientLight(0x404c38); // slightly greenish tint
+        // --- lighting complex ---
+        const ambientLight = new THREE.AmbientLight(0x404060); // cool ambient
         scene.add(ambientLight);
 
-        // Main sun light (directional)
-        const sunLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
-        sunLight.position.set(10, 20, 5);
-        sunLight.castShadow = true;
-        sunLight.receiveShadow = true;
-        sunLight.shadow.mapSize.width = 1024;
-        sunLight.shadow.mapSize.height = 1024;
+        // Moonlight (directional with blueish tint)
+        const moonLight = new THREE.DirectionalLight(0xcceeff, 0.9);
+        moonLight.position.set(-15, 20, 10);
+        moonLight.castShadow = true;
+        moonLight.receiveShadow = true;
+        moonLight.shadow.mapSize.width = 1024;
+        moonLight.shadow.mapSize.height = 1024;
         const d = 25;
-        sunLight.shadow.camera.left = -d;
-        sunLight.shadow.camera.right = d;
-        sunLight.shadow.camera.top = d;
-        sunLight.shadow.camera.bottom = -d;
-        sunLight.shadow.camera.near = 1;
-        sunLight.shadow.camera.far = 50;
-        sunLight.shadow.bias = -0.0005;
-        scene.add(sunLight);
+        moonLight.shadow.camera.left = -d;
+        moonLight.shadow.camera.right = d;
+        moonLight.shadow.camera.top = d;
+        moonLight.shadow.camera.bottom = -d;
+        moonLight.shadow.camera.near = 1;
+        moonLight.shadow.camera.far = 50;
+        moonLight.shadow.bias = -0.0008;
+        scene.add(moonLight);
 
-        // Fill light from the back/side
-        const fillLight = new THREE.DirectionalLight(0xd1e0ff, 0.5);
-        fillLight.position.set(-10, 5, -10);
+        // Warm fill from below (fairy lights)
+        const fillLight = new THREE.PointLight(0xffaa88, 0.8, 30);
+        fillLight.position.set(2, 5, 4);
         scene.add(fillLight);
 
-        // Soft rim light
-        const rimLight = new THREE.DirectionalLight(0xfff3e0, 0.4);
-        rimLight.position.set(-5, 5, 15);
-        scene.add(rimLight);
+        const backLight = new THREE.PointLight(0x88aaff, 0.5, 25);
+        backLight.position.set(-5, 3, -10);
+        scene.add(backLight);
 
-        // Small point light to lift colors near ground (hidden)
-        const groundGlow = new THREE.PointLight(0x88aa77, 0.5, 15);
-        groundGlow.position.set(0, 3, 0);
-        scene.add(groundGlow);
+        // colored point lights for magical feel
+        const colorLight1 = new THREE.PointLight(0xff88aa, 0.6, 20);
+        colorLight1.position.set(6, 2, 5);
+        scene.add(colorLight1);
+        const colorLight2 = new THREE.PointLight(0xaaff88, 0.5, 20);
+        colorLight2.position.set(-5, 3, -4);
+        scene.add(colorLight2);
 
-        // --- ground plane with natural texture (procedural via canvas) ---
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 512;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#3f6140';
-        ctx.fillRect(0, 0, 512, 512);
-        // draw some lighter/darker patches
-        for (let i = 0; i < 600; i++) {
-            ctx.fillStyle = i % 3 === 0 ? '#5f8250' : '#2f4f2f';
-            ctx.beginPath();
-            ctx.arc(Math.random()*512, Math.random()*512, Math.random()*20 + 5, 0, Math.PI*2);
-            ctx.fill();
-        }
-        // fine noise
-        ctx.fillStyle = '#4a6b3a';
-        ctx.globalAlpha = 0.15;
-        for (let i = 0; i < 2000; i++) {
-            ctx.fillRect(Math.random()*512, Math.random()*512, 2, 2);
-        }
-        ctx.globalAlpha = 1;
-        const groundTexture = new THREE.CanvasTexture(canvas);
-        groundTexture.wrapS = THREE.RepeatWrapping;
-        groundTexture.wrapT = THREE.RepeatWrapping;
-        groundTexture.repeat.set(8, 8);
-
-        const groundMaterial = new THREE.MeshStandardMaterial({ map: groundTexture, roughness: 0.85, metalness: 0.1 });
-        const ground = new THREE.Mesh(new THREE.CircleGeometry(30, 32), groundMaterial);
+        // --- ground with displacement for interest ---
+        const groundGeo = new THREE.CircleGeometry(40, 64);
+        const groundMat = new THREE.MeshStandardMaterial({ 
+            color: 0x2a4a2a, 
+            roughness: 0.7, 
+            emissive: 0x102010,
+            emissiveIntensity: 0.2
+        });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = 0;
         ground.receiveShadow = true;
-        ground.castShadow = false;
         scene.add(ground);
 
-        // --- decorative elements: a few trees / bushes / rocks to make it lush ---
+        // decorative glowing patches on ground
+        const glowCanvas = document.createElement('canvas');
+        glowCanvas.width = 256;
+        glowCanvas.height = 256;
+        const gCtx = glowCanvas.getContext('2d');
+        gCtx.fillStyle = '#2a4a2a';
+        gCtx.fillRect(0,0,256,256);
+        for (let i=0; i<80; i++) {
+            gCtx.fillStyle = `rgba(100,200,100,${Math.random()*0.3})`;
+            gCtx.beginPath();
+            gCtx.arc(Math.random()*256, Math.random()*256, Math.random()*20+5, 0, 2*Math.PI);
+            gCtx.fill();
+        }
+        const glowTexture = new THREE.CanvasTexture(glowCanvas);
+        glowTexture.wrapS = THREE.RepeatWrapping;
+        glowTexture.wrapT = THREE.RepeatWrapping;
+        glowTexture.repeat.set(12,12);
+        ground.material.emissiveMap = glowTexture;
+        ground.material.emissiveIntensity = 0.4;
 
-        // simple tree function (trunk + foliage balls)
-        function addTree(x, z, size = 1.0) {
+        // --- environment: mystical trees, rocks, crystals ---
+        function createCrystal(x, z, color) {
+            const geo = new THREE.OctahedronGeometry(0.6, 0);
+            const mat = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.3, roughness: 0.2, metalness: 0.1 });
+            const crystal = new THREE.Mesh(geo, mat);
+            crystal.position.set(x, 0.4, z);
+            crystal.castShadow = true;
+            crystal.receiveShadow = true;
+            scene.add(crystal);
+        }
+        createCrystal(5, 6, 0xff88aa);
+        createCrystal(-5, -5, 0x88ffaa);
+        createCrystal(7, -6, 0xaaccff);
+        createCrystal(-7, 4, 0xffaa88);
+
+        // trees with glowing leaves
+        function addGlowTree(x, z) {
             const group = new THREE.Group();
-            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6b4c3b, roughness: 0.9 });
-            const foliageMat = new THREE.MeshStandardMaterial({ color: 0x3a754a, emissive: 0x102010, roughness: 0.4 });
-            
-            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4 * size, 0.6 * size, 2.0 * size, 6), trunkMat);
-            trunk.position.y = 1.0 * size;
+            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x6b4c3b, roughness: 0.8 });
+            const leafMat = new THREE.MeshStandardMaterial({ color: 0x4a9f6a, emissive: 0x224422 });
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.8, 2.5), trunkMat);
+            trunk.position.y = 1.25;
             trunk.castShadow = true;
             trunk.receiveShadow = true;
             group.add(trunk);
-
-            const foliage1 = new THREE.Mesh(new THREE.SphereGeometry(0.8 * size, 7), foliageMat);
-            foliage1.position.y = 2.2 * size;
-            foliage1.castShadow = true;
-            foliage1.receiveShadow = true;
-            group.add(foliage1);
-
-            const foliage2 = new THREE.Mesh(new THREE.SphereGeometry(0.6 * size, 7), foliageMat);
-            foliage2.position.set(0.5 * size, 2.8 * size, 0.3 * size);
-            foliage2.castShadow = true;
-            group.add(foliage2);
-
-            const foliage3 = new THREE.Mesh(new THREE.SphereGeometry(0.6 * size, 7), foliageMat);
-            foliage3.position.set(-0.4 * size, 3.0 * size, -0.4 * size);
-            foliage3.castShadow = true;
-            group.add(foliage3);
-
+            
+            for (let i=0; i<5; i++) {
+                const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.7, 6), leafMat);
+                leaf.position.set(Math.sin(i)*0.6, 2.4 + i*0.4, Math.cos(i)*0.6);
+                leaf.castShadow = true;
+                group.add(leaf);
+            }
             group.position.set(x, 0, z);
             scene.add(group);
         }
+        addGlowTree(-8, -8);
+        addGlowTree(9, 7);
+        addGlowTree(8, -9);
+        addGlowTree(-9, 8);
 
-        // add a few background trees
-        addTree(-7, -6, 1.0);
-        addTree(8, -8, 1.1);
-        addTree(9, 5, 0.9);
-        addTree(-8, 7, 1.2);
-        addTree(-9, -8, 0.9);
-        addTree(5, 10, 0.8);
-        addTree(-4, -11, 1.0);
-
-        // rocks and bushes (simple spheres/rocks)
-        function addRock(x, z, scale) {
-            const rockMat = new THREE.MeshStandardMaterial({ color: 0x7a7a7a, roughness: 0.8 });
-            const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.5 * scale), rockMat);
-            rock.position.set(x, 0.2 * scale, z);
-            rock.rotation.set(Math.random(), Math.random(), Math.random());
-            rock.castShadow = true;
-            rock.receiveShadow = true;
-            scene.add(rock);
+        // --- floating particles (magic dust) ---
+        const particleCount = 800;
+        const particlesGeo = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particleCount * 3);
+        const colorArray = new Float32Array(particleCount * 3);
+        for (let i=0; i<particleCount; i++) {
+            const r = 15 + Math.random()*15;
+            const theta = Math.random() * Math.PI*2;
+            const phi = Math.random() * Math.PI - Math.PI/2;
+            posArray[i*3] = Math.cos(theta)*Math.cos(phi)*r;
+            posArray[i*3+1] = Math.sin(phi)*r + 5;
+            posArray[i*3+2] = Math.sin(theta)*Math.cos(phi)*r;
+            
+            const col = new THREE.Color().setHSL(0.3 + Math.random()*0.4, 0.8, 0.6);
+            colorArray[i*3] = col.r;
+            colorArray[i*3+1] = col.g;
+            colorArray[i*3+2] = col.b;
         }
-        addRock(-4, -4, 0.7);
-        addRock(3, 5, 0.6);
-        addRock(-2, -7, 0.8);
-        addRock(6, -3, 0.5);
-        addRock(-6, 4, 0.7);
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeo.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+        const particlesMat = new THREE.PointsMaterial({ size: 0.15, vertexColors: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+        const particles = new THREE.Points(particlesGeo, particlesMat);
+        scene.add(particles);
+        let particlesVisible = true;
 
-        function addBush(x, z, size) {
-            const bushMat = new THREE.MeshStandardMaterial({ color: 0x2d6a4f, roughness: 0.6 });
-            const bush = new THREE.Mesh(new THREE.SphereGeometry(size, 6), bushMat);
-            bush.position.set(x, size * 0.8, z);
-            bush.castShadow = true;
-            bush.receiveShadow = true;
-            scene.add(bush);
-            // add a second small sphere
-            const bush2 = new THREE.Mesh(new THREE.SphereGeometry(size*0.7, 6), bushMat);
-            bush2.position.set(x + size*0.6, size*0.5, z - size*0.4);
-            bush2.castShadow = true;
-            bush2.receiveShadow = true;
-            scene.add(bush2);
-        }
-        addBush(1, 8, 0.8);
-        addBush(-3, 9, 0.7);
-        addBush(7, 2, 0.9);
-        addBush(-8, -2, 0.8);
+        // --- flowers array with advanced properties ---
+        const flowers = []; // each: { group, stem, head, baseY, speed, offset, stemHeight }
 
-        // --- dynamic flowers array (for planting and swaying) ---
-        const flowers = []; // each entry: { group, stem, petals, initialY, speed, offset }
-
-        // function to create a flower at given (x, z) with slight random color variation
+        // function to create a flower with current slider values
         function createFlowerAt(x, z) {
+            const stemHeightVal = parseFloat(document.getElementById('stem-slider').value);
+            const petalSizeVal = parseFloat(document.getElementById('petal-slider').value);
+            
             const group = new THREE.Group();
             
-            // stem (thin cylinder)
-            const stemHeight = 0.9 + Math.random() * 0.3;
-            const stemColor = 0x5e8c5e;
-            const stemMat = new THREE.MeshStandardMaterial({ color: stemColor, roughness: 0.7 });
-            const stemGeo = new THREE.CylinderGeometry(0.04, 0.06, stemHeight, 5);
+            // stem (tapered)
+            const stemMat = new THREE.MeshStandardMaterial({ color: 0x7aa07a, emissive: 0x112211 });
+            const stemGeo = new THREE.CylinderGeometry(0.05, 0.08, stemHeightVal, 6);
             const stem = new THREE.Mesh(stemGeo, stemMat);
-            stem.position.y = stemHeight / 2;
+            stem.position.y = stemHeightVal / 2;
             stem.castShadow = true;
             stem.receiveShadow = true;
             group.add(stem);
 
-            // leaves (tiny green triangles or small planes) - optional simple leaf
-            const leafMat = new THREE.MeshStandardMaterial({ color: 0x3e8040 });
-            const leafGeo = new THREE.SphereGeometry(0.08, 4);
+            // leaves
+            const leafMat = new THREE.MeshStandardMaterial({ color: 0x5f8b5f });
+            const leafGeo = new THREE.SphereGeometry(0.1, 4);
             const leaf1 = new THREE.Mesh(leafGeo, leafMat);
-            leaf1.position.set(0.1, stemHeight * 0.4, 0.05);
+            leaf1.position.set(0.15, stemHeightVal*0.4, 0.05);
             leaf1.castShadow = true;
             group.add(leaf1);
             const leaf2 = new THREE.Mesh(leafGeo, leafMat);
-            leaf2.position.set(-0.1, stemHeight * 0.7, -0.05);
+            leaf2.position.set(-0.1, stemHeightVal*0.7, -0.1);
             leaf2.castShadow = true;
             group.add(leaf2);
 
-            // flower head (several petals around a center)
+            // head
             const headGroup = new THREE.Group();
-            headGroup.position.y = stemHeight;
+            headGroup.position.y = stemHeightVal;
             
-            const petalCount = 6 + Math.floor(Math.random() * 4); // 6-9 petals
+            // petal color from random hue or fixed? we'll use random but can be overridden by button
+            const hue = Math.random(); // full spectrum
             const petalMat = new THREE.MeshStandardMaterial({ 
-                color: new THREE.Color().setHSL(0.05 + Math.random()*0.2, 0.8, 0.65), // pink to orange/red hues
-                emissive: 0x221100,
-                roughness: 0.3
+                color: new THREE.Color().setHSL(hue, 0.9, 0.6),
+                emissive: new THREE.Color().setHSL(hue, 0.8, 0.1)
             });
-            const centerMat = new THREE.MeshStandardMaterial({ color: 0xffdd77, emissive: 0x332200 });
+            const centerMat = new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0x442200 });
             
-            // petals as small flattened spheres or cones
-            for (let i = 0; i < petalCount; i++) {
-                const angle = (i / petalCount) * Math.PI * 2;
-                const radius = 0.18;
-                const petal = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.05, 6), petalMat);
-                petal.rotation.x = Math.PI / 2;
+            const petalCount = 7 + Math.floor(Math.random()*5);
+            for (let i=0; i<petalCount; i++) {
+                const angle = (i/petalCount)*Math.PI*2;
+                const petal = new THREE.Mesh(new THREE.ConeGeometry(petalSizeVal, 0.06, 6), petalMat);
+                petal.rotation.x = Math.PI/2;
                 petal.rotation.z = angle;
-                petal.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+                petal.position.set(Math.cos(angle)*0.2, 0, Math.sin(angle)*0.2);
                 petal.castShadow = true;
                 headGroup.add(petal);
             }
-            // center
-            const center = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6), centerMat);
+            const center = new THREE.Mesh(new THREE.SphereGeometry(0.12, 5), centerMat);
             center.position.y = 0.02;
-            center.castShadow = true;
             headGroup.add(center);
             
             group.add(headGroup);
-
-            // position the whole flower
             group.position.set(x, 0, z);
-            
-            // store animation metadata for gentle sway
-            const swaySpeed = 0.8 + Math.random() * 0.7;
-            const swayOffset = Math.random() * 100;
             
             scene.add(group);
             
             flowers.push({
-                group: group,
-                stem: stem,
-                head: headGroup,
+                group, stem, head: headGroup,
                 baseY: 0,
-                speed: swaySpeed,
-                offset: swayOffset
+                speed: 0.7 + Math.random()*1.0,
+                offset: Math.random()*100,
+                stemHeight: stemHeightVal
             });
+            
+            document.getElementById('flower-count').innerText = flowers.length;
+            return group;
         }
 
-        // --- pre-plant some flowers around for a fuller look ---
-        const initialPositions = [
-            [1, 1], [-1, 2], [2, -1], [-2, 0], [0, -2], [3, 3], [-3, -2], [4, -3], [-4, 1], [-1, -3],
-            [5, 4], [-5, -4], [2, 5], [-2, -5], [0, 5], [5, 0], [-5, 1], [3, -4], [-3, 4]
-        ];
-        initialPositions.forEach(pos => {
-            // add slight randomness to avoid grid look
-            const x = pos[0] + (Math.random() - 0.5) * 0.6;
-            const z = pos[1] + (Math.random() - 0.5) * 0.6;
+        // pre-plant some flowers
+        for (let i=0; i<24; i++) {
+            const angle = Math.random()*Math.PI*2;
+            const rad = 4 + Math.random()*7;
+            const x = Math.cos(angle)*rad;
+            const z = Math.sin(angle)*rad;
             createFlowerAt(x, z);
+        }
+
+        // --- UI bindings for full control ---
+        const stemSlider = document.getElementById('stem-slider');
+        const petalSlider = document.getElementById('petal-slider');
+        const swaySlider = document.getElementById('sway-slider');
+        const timeSlider = document.getElementById('time-slider');
+        const stemVal = document.getElementById('stem-val');
+        const petalVal = document.getElementById('petal-val');
+        const swayVal = document.getElementById('sway-val');
+        const timeVal = document.getElementById('time-val');
+        const hueRandomBtn = document.getElementById('hue-random');
+        const particleToggle = document.getElementById('particle-toggle');
+        
+        stemSlider.addEventListener('input', (e) => stemVal.innerText = parseFloat(e.target.value).toFixed(2));
+        petalSlider.addEventListener('input', (e) => petalVal.innerText = parseFloat(e.target.value).toFixed(2));
+        swaySlider.addEventListener('input', (e) => swayVal.innerText = parseFloat(e.target.value).toFixed(3));
+        timeSlider.addEventListener('input', (e) => timeVal.innerText = parseFloat(e.target.value).toFixed(2));
+        
+        hueRandomBtn.addEventListener('click', () => {
+            // doesn't change existing, but future flowers will have random hue already.
+            alert('🌸 New flowers will have random petal colors!');
         });
 
-        // --- interaction: plant new flowers on click ---
+        particleToggle.addEventListener('click', () => {
+            particlesVisible = !particlesVisible;
+            particles.visible = particlesVisible;
+            particleToggle.innerText = particlesVisible ? '✨ TOGGLE MAGIC DUST (ON)' : '✨ TOGGLE MAGIC DUST (OFF)';
+        });
+
+        // click to plant
         renderer.domElement.addEventListener('click', (event) => {
-            // we need to get 3D coordinates from mouse click on ground plane (y=0)
-            // simple raycasting
             const mouse = new THREE.Vector2();
             mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
             mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
@@ -350,91 +505,74 @@
             const raycaster = new THREE.Raycaster();
             raycaster.setFromCamera(mouse, camera);
             
-            // intersect with ground (a large plane at y=0)
-            const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            const groundPlane = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
             const target = new THREE.Vector3();
             if (raycaster.ray.intersectPlane(groundPlane, target)) {
-                // limit range to stay within ground area
-                if (Math.abs(target.x) < 12 && Math.abs(target.z) < 12) {
+                if (Math.abs(target.x) < 18 && Math.abs(target.z) < 18) {
                     createFlowerAt(target.x, target.z);
                 }
             }
         });
 
-        // --- simple clouds (decorative) ---
-        function createCloud(x, y, z) {
-            const cloudGroup = new THREE.Group();
-            const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x333333, transparent: true, opacity: 0.7 });
-            const p1 = new THREE.Mesh(new THREE.SphereGeometry(1.2, 7), cloudMat);
-            const p2 = new THREE.Mesh(new THREE.SphereGeometry(0.9, 7), cloudMat);
-            p2.position.set(1.1, 0.3, 0.2);
-            const p3 = new THREE.Mesh(new THREE.SphereGeometry(0.8, 7), cloudMat);
-            p3.position.set(-1.0, 0.2, -0.3);
-            const p4 = new THREE.Mesh(new THREE.SphereGeometry(0.7, 7), cloudMat);
-            p4.position.set(0.1, 0.7, 0.8);
-            cloudGroup.add(p1, p2, p3, p4);
-            cloudGroup.position.set(x, y, z);
-            scene.add(cloudGroup);
-        }
-        createCloud(-6, 8, -5);
-        createCloud(7, 9, 4);
-        createCloud(3, 10, -8);
-        createCloud(-4, 7, 9);
-
-        // --- subtle grass blades? not necessary, flowers suffice. But add a few low tufts with simple geometry? skip for performance, but maybe a few small green spikes.
-        // add a few random low poly grass tufts (tiny spikes)
-        const grassMat = new THREE.MeshStandardMaterial({ color: 0x4f8a4f });
-        for (let i = 0; i < 60; i++) {
-            const g = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.2, 4), grassMat);
-            const angle = Math.random() * Math.PI * 2;
-            const rad = 7 + Math.random() * 8;
-            g.position.set(Math.cos(angle)*rad, 0.1, Math.sin(angle)*rad);
-            g.rotation.x = 0;
-            g.castShadow = true;
-            g.receiveShadow = true;
-            scene.add(g);
-        }
-
-        // --- animation loop with gentle sway ---
+        // --- animation variables ---
         let clock = new THREE.Clock();
+        let globalTimeScale = 1.0;
 
+        // FPS counter
+        let lastTime = performance.now();
+        let frames = 0;
+        const fpsSpan = document.getElementById('fps');
+
+        // --- animate ---
         function animate() {
             const delta = clock.getDelta();
-            const elapsedTime = performance.now() / 1000; // seconds
-
-            // sway flowers: rotate head and stem slightly using sine waves
-            flowers.forEach(flower => {
-                // simple harmonic motion on rotation and position
-                const swayX = Math.sin(elapsedTime * flower.speed + flower.offset) * 0.03;
-                const swayZ = Math.cos(elapsedTime * flower.speed * 0.8 + flower.offset) * 0.03;
-                
-                // rotate the whole group slightly for stem bending effect
-                flower.group.rotation.x = swayX * 0.5;
-                flower.group.rotation.z = swayZ * 0.5;
-                
-                // also move head a tad? but group rotation already shifts position, fine.
+            const elapsed = performance.now() / 1000;
+            
+            // update time scale from slider
+            globalTimeScale = parseFloat(timeSlider.value);
+            
+            // sway flowers
+            const intensity = parseFloat(swaySlider.value);
+            flowers.forEach(f => {
+                const swayX = Math.sin(elapsed * globalTimeScale * f.speed + f.offset) * intensity * 1.5;
+                const swayZ = Math.cos(elapsed * globalTimeScale * f.speed * 0.9 + f.offset) * intensity * 1.5;
+                f.group.rotation.x = swayX;
+                f.group.rotation.z = swayZ;
             });
+
+            // rotate particles slowly
+            particles.rotation.y += 0.0005 * globalTimeScale;
+            particles.rotation.x += 0.0002 * globalTimeScale;
 
             // update controls
             controls.update();
 
-            // render
-            renderer.render(scene, camera);
+            // render via composer
+            composer.render();
+
+            // FPS calculation
+            frames++;
+            const now = performance.now();
+            if (now - lastTime >= 1000) {
+                fpsSpan.innerText = frames;
+                frames = 0;
+                lastTime = now;
+            }
+
             requestAnimationFrame(animate);
         }
-
         animate();
 
-        // --- resize handler ---
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
+        // resize handler
+        window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
 
-        // --- start with a friendly log ---
-        console.log('🌻 Garden is ready! Click to plant flowers.');
+        // initial count
+        document.getElementById('flower-count').innerText = flowers.length;
     </script>
 </body>
 </html>
